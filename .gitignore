@@ -1,0 +1,7 @@
+tmp/
+node_modules/
+*.tar.gz
+*.tar
+.env*
+!.env.example
+.DS_Store
