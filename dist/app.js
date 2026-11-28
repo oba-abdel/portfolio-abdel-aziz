@@ -23,3 +23,40 @@ requestForm.addEventListener('submit', event => {
   }
   window.location.href = 'mailto:' + recipient + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
 });
+
+const deck = document.querySelector('.contact-deck');
+const slides = [...deck.querySelectorAll('.contact-slide')];
+const controls = deck.querySelector('.slide-controls');
+const play = controls.querySelector('[data-play]');
+const motion = matchMedia('(prefers-reduced-motion: reduce)');
+let current = 0;
+let playing = !motion.matches;
+let visible = false;
+let timer;
+function showSlide(offset) {
+  slides[current].hidden = true;
+  current = (current + offset + slides.length) % slides.length;
+  slides[current].hidden = false;
+  controls.querySelector('.slide-count').textContent = (current + 1) + ' / ' + slides.length;
+}
+function syncPlayback() {
+  clearInterval(timer);
+  play.textContent = playing ? 'Pause' : 'Lecture';
+  if (visible && playing && !document.hidden) timer = setInterval(() => showSlide(1), 7500);
+}
+function navigate(offset) {
+  playing = false;
+  showSlide(offset);
+  syncPlayback();
+}
+controls.hidden = false;
+controls.querySelector('[data-prev]').onclick = () => navigate(-1);
+controls.querySelector('[data-next]').onclick = () => navigate(1);
+play.onclick = () => { playing = !playing; syncPlayback(); };
+document.addEventListener('visibilitychange', syncPlayback);
+motion.addEventListener('change', () => { playing = !motion.matches; syncPlayback(); });
+new IntersectionObserver(entries => {
+  visible = entries[0].isIntersecting;
+  syncPlayback();
+}, {threshold: .35}).observe(deck);
+syncPlayback();
