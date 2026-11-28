@@ -41,10 +41,21 @@
 .offer-list p { color:var(--muted); margin-bottom:.75rem; }
 .offer-list a { color:var(--accent); text-decoration:underline; text-underline-offset:.22em; }
 .offer-cta { margin-top:2rem; }
-.request-form { max-width:48rem; display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-block:2rem; text-align:left; }
+.request-form { max-width:42rem; display:grid; grid-template-columns:minmax(0,1fr); gap:1.25rem; margin-block:2rem; text-align:left; }
 .request-form label { display:grid; gap:.4rem; font-weight:600; }
-.request-form input,.request-form select,.request-form textarea { box-sizing:border-box; width:100%; min-width:0; border:1px solid #68767d; border-radius:4px; padding:.8rem; background:#fff; color:#152028; font:inherit; }
+.request-form input,.request-form select,.request-form textarea { box-sizing:border-box; width:100%; min-width:0; border:1px solid #68767d; border-radius:8px; padding:.85rem 1rem; background:#17232d; color:#f4f5f3; font:inherit; font-weight:400; color-scheme:dark; }
 .request-form textarea { resize:vertical; }
 .request-form .wide { grid-column:1/-1; }
 .request-form .actions,.request-form p { margin:0; }
 @media(max-width:650px){.request-form{grid-template-columns:1fr}.request-form .actions{align-items:flex-start}}
+
+.subject-control { display:block; position:relative; }
+.request-form select { appearance:none; padding-right:3rem; cursor:pointer; }
+.subject-control::after {
+  content:""; position:absolute; right:1.2rem; top:50%;
+  width:.55rem; height:.55rem; border:solid #d5ef6c; border-width:0 2px 2px 0;
+  transform:translateY(-70%) rotate(45deg); pointer-events:none;
+}
+.request-form :is(input, select, textarea):focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+.request-form textarea::placeholder { color:#b1bec6; }
+@media(forced-colors:active){.request-form select{appearance:auto}.subject-control::after{display:none}}
